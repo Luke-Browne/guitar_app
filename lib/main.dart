@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:guitar_app/widgets/tuner.dart';
 import 'home_widget.dart';
 
-void main() => runApp(App());
+void main() async => runApp(App());
 
 class App extends StatelessWidget {
   @override

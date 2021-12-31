@@ -6,32 +6,34 @@ import 'package:guitar_app/widgets/tuner.dart';
 import 'package:guitar_app/icons/guitar_icons_icons.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
-  State createState() {
-    return _HomeState();
-  }
+  _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State {
-  int _pageIndex = 0;
-  late PageController _pageController;
+  int currentTab = 0;
 
-  List<Widget> tabPages = [
-    Fretboard(),
-    ChordGen(),
-    Tuner(),
-  ];
+  late Widget currentPage;
+  late Fretboard fretboard;
+  late ChordGen chordGen;
+  late Tuner tuner;
+
+  late List<Widget> pages;
 
   @override
   void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _pageIndex);
-  }
+    fretboard = Fretboard();
+    chordGen = ChordGen();
+    tuner = Tuner();
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
+    pages = [fretboard, chordGen, tuner];
+
+    currentPage = fretboard;
+
+    super.initState();
+
   }
 
   @override
@@ -41,9 +43,15 @@ class _HomeState extends State {
         systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
         toolbarHeight: -24, // needed to remove the appBar, could just delete it but above line is required to make the bar with wifi, signal, etc. opaque
       ),
+      body: currentPage,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _pageIndex,
-        onTap: onTabTapped,
+        currentIndex: currentTab,
+        onTap: (int index) {
+          setState(() {
+            currentTab = index;
+            currentPage = pages[index];
+          });
+        },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(GuitarIcons.two_music_notes, size: 30),
@@ -56,22 +64,6 @@ class _HomeState extends State {
               title: Text("Tuner")),
         ],
       ),
-      body: PageView(
-        children: tabPages,
-        onPageChanged: onPageChanged,
-        controller: _pageController,
-      ),
     );
-  }
-
-  void onPageChanged(int page) {
-    setState(() {
-      this._pageIndex = page;
-    });
-  }
-
-  void onTabTapped(int index) {
-    this._pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 300), curve: Curves.decelerate);
   }
 }
