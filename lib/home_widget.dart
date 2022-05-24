@@ -33,15 +33,16 @@ class _HomeState extends State {
     currentPage = fretboard;
 
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-        toolbarHeight: -24, // needed to remove the appBar, could just delete it but above line is required to make the bar with wifi, signal, etc. opaque
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+        toolbarHeight:
+            -24, // needed to remove the appBar, could just delete it but above line is required to make the bar with wifi, signal, etc. opaque
       ),
       body: currentPage,
       bottomNavigationBar: BottomNavigationBar(
